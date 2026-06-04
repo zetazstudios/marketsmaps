@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================
+   MarketsMaps Design System - Theme & Tokens
+   ========================================== */
+
+:root {
+  --accent-h: 188;
+  --accent-s: 78%;
+  --accent-l: 56%;
+  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --accent-light: hsl(var(--accent-h), var(--accent-s), 70%);
+  --accent-dark: hsl(var(--accent-h), var(--accent-s), 40%);
+  --accent-glow: hsl(var(--accent-h), var(--accent-s), var(--accent-l) / 0.15);
+  --accent-glow-strong: hsl(var(--accent-h), var(--accent-s), var(--accent-l) / 0.3);
+
+  --surface-0: #07090E;
+  --surface-1: #0A0D18;
+  --surface-2: #0C1020;
+  --surface-3: #111827;
+  --surface-4: #1E293B;
+  --border: #1E293B;
+  --border-subtle: #151B2E;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+}
+
+/* Theme: Purple */
+[data-theme="purple"] {
+  --accent-h: 271;
+  --accent-s: 76%;
+  --accent-l: 53%;
+}
+
+/* Theme: Emerald */
+[data-theme="emerald"] {
+  --accent-h: 160;
+  --accent-s: 84%;
+  --accent-l: 39%;
+}
+
+/* Theme: Amber */
+[data-theme="amber"] {
+  --accent-h: 38;
+  --accent-s: 92%;
+  --accent-l: 50%;
+}
+
+/* Theme: Rose */
+[data-theme="rose"] {
+  --accent-h: 347;
+  --accent-s: 77%;
+  --accent-l: 50%;
+}
+
+@layer utilities {
+  .animate-slide-in {
+    animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  .animate-scale-in {
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-4);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* MapLibre GL Controls */
+.maplibregl-ctrl-group {
+  background-color: rgba(10, 13, 24, 0.9) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(16px) !important;
+  overflow: hidden !important;
+}
+
+.maplibregl-ctrl-group button {
+  width: 36px !important;
+  height: 36px !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  transition: all 0.2s ease !important;
+  background-color: transparent !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+.maplibregl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+
+.maplibregl-ctrl-icon {
+  filter: invert(1) !important;
+  opacity: 0.7 !important;
+  transform: scale(0.85) !important;
+}
+
+.maplibregl-ctrl-group button:hover .maplibregl-ctrl-icon {
+  opacity: 1 !important;
+}
+
+/* Glass panel base */
+.glass-panel {
+  background: rgba(10, 13, 24, 0.88);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid rgba(30, 41, 59, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 20px 60px -15px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Accent-colored button */
+.btn-accent {
+  background: var(--accent);
+  color: var(--surface-0);
+  transition: all 0.2s ease;
+}
+.btn-accent:hover {
+  background: var(--accent-light);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Accent border glow */
+.border-accent {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 12px var(--accent-glow);
+}

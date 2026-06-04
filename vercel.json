@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd apps/web && npx -y pnpm@9 install && npx -y pnpm@9 run build",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "npx -y pnpm@9 install",
+  "framework": "nextjs",
+  "devCommand": "cd apps/web && npx -y pnpm@9 run dev"
+}

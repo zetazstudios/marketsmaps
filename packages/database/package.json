@@ -1,0 +1,23 @@
+{
+  "name": "@marketsmaps/database",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:seed": "tsx seed.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.30.10",
+    "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.6",
+    "drizzle-kit": "^0.20.17",
+    "tsx": "^4.10.5",
+    "typescript": "^5.4.5"
+  }
+}
