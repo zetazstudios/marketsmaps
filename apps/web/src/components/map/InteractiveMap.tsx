@@ -633,19 +633,72 @@ export default function InteractiveMap() {
   };
 
   // Submit bug report
-  const handleSubmitReport = (e: React.FormEvent) => {
+  const handleSubmitReport = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reportDescription.trim()) return;
     setIsSubmittingReport(true);
+
+    const reportData = {
+      type: reportType,
+      category: reportCategory,
+      description: reportDescription,
+      steps: reportSteps || undefined,
+      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'unknown',
+    };
+
+    // Save report to localStorage (local log)
+    try {
+      const existingReportsJson = localStorage.getItem('marketsmaps_bug_reports');
+      const existingReports = existingReportsJson ? JSON.parse(existingReportsJson) : [];
+      existingReports.push({ ...reportData, id: `report-${Date.now()}`, timestamp: new Date().toISOString() });
+      localStorage.setItem('marketsmaps_bug_reports', JSON.stringify(existingReports));
+    } catch (err) {
+      console.error('Error saving bug report to localStorage:', err);
+    }
+
+    // HTTP POST call to real NestJS backend
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+    try {
+      const response = await fetch(`${API_URL}/reports`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reportData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Server responded with an error status');
+      }
+    } catch (err) {
+      console.error('Failed to submit bug report to backend API, falling back to email client...', err);
+      
+      // Fallback: Open mailto link if API is down/offline
+      const subject = encodeURIComponent(`[MarketsMaps Bug Report] ${reportType.toUpperCase()}: ${reportCategory}`);
+      const body = encodeURIComponent(
+        `Detalles del Reporte de Falla:\n` +
+        `----------------------------------\n` +
+        `Tipo: ${reportType}\n` +
+        `Categoría: ${reportCategory}\n` +
+        `Fecha: ${new Date().toISOString()}\n\n` +
+        `Descripción:\n${reportDescription}\n\n` +
+        `Pasos para reproducir:\n${reportSteps || 'N/A'}\n\n` +
+        `Dispositivo:\n${reportData.userAgent}\n` +
+        `----------------------------------`
+      );
+      
+      if (typeof window !== 'undefined') {
+        window.location.href = `mailto:soporte@marketsmaps.com?subject=${subject}&body=${body}`;
+      }
+    }
+
+    setIsSubmittingReport(false);
+    setReportSubmitted(true);
     setTimeout(() => {
-      setIsSubmittingReport(false);
-      setReportSubmitted(true);
-      setTimeout(() => {
-        setReportDescription('');
-        setReportSteps('');
-        setReportSubmitted(false);
-      }, 5000);
-    }, 1200);
+      setReportDescription('');
+      setReportSteps('');
+      setReportSubmitted(false);
+    }, 5000);
   };
 
   // ============ RENDER ============
