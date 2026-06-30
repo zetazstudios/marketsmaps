@@ -179,17 +179,3 @@ export const reviews = pgTable('reviews', {
   comment: text('comment'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
-
-// 9. Bug Reports Table
-export const bugReports = pgTable('bug_reports', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  userId: uuid('user_id').references(() => users.id, { onDelete: 'set null' }),
-  type: varchar('type', { length: 50 }).notNull(), // 'bug', 'suggestion', 'other'
-  category: varchar('category', { length: 100 }).notNull(), // 'map', 'search', 'cart', 'chat', 'other'
-  description: text('description').notNull(),
-  steps: text('steps'),
-  userAgent: text('user_agent'),
-  status: varchar('status', { length: 50 }).default('open').notNull(), // 'open', 'in_progress', 'resolved'
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
-});
-
